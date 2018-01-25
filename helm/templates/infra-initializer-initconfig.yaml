@@ -1,0 +1,15 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: InitializerConfiguration
+metadata:
+  name: cord-infra
+initializers:
+- name: cord-infra.initializer.onf.io
+  rules:
+  - apiGroups:
+    - "*"
+    apiVersions:
+    - "*"
+    resources:
+    - deployments
+    - replicasets
+    - replicationcontrollers

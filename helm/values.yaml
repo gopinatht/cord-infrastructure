@@ -1,0 +1,7 @@
+images:
+  infra_initializer:
+    repository: gopinatht/cord-infra-initializer
+    tag: 'latest'
+  infra_helper:
+    repository: gopinatht/infra-helper
+    tag: 'latest'

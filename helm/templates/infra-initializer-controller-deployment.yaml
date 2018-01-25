@@ -1,0 +1,29 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  initializers:
+    pending: []
+  labels:
+    app: cord-infra-initializer
+  name: cord-infra-initializer
+  namespace: utility
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cord-infra-initializer
+      name: cord-infra-initializer
+    spec:
+      serviceAccount: utility
+      serviceAccountName: utility
+      containers:
+      - name: cord-infra-initializer
+        image: {{ .Values.images.infra_initializer.repository }}:{{ .Values.images.infra_initializer.tag }}
+        imagePullPolicy: IfNotPresent
+        args:
+        - "-annotation=initializer.onf.io/cord-infra"
+        - "-require-annotation=true"
+        - "-initializer-name=cord-infra.initializer.onf.io"
+        - "-configmap=cord-infra-initializer"
+            

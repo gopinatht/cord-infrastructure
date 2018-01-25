@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cord-infra-initializer
+  namespace: utility
+data:
+  config: |
+    containers:
+    - name: sidecar-cord-infra
+      image: gopinatht/cord-infra:latest
+      imagePullPolicy: IfNotPresent
