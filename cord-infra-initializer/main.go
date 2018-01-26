@@ -59,7 +59,7 @@ func main() {
 	flag.StringVar(&annotation, "annotation", defaultAnnotation, "The annotation to trigger initialization")
 	flag.StringVar(&configmap, "configmap", defaultConfigmap, "The cord-infra initializer configuration configmap")
 	flag.StringVar(&initializerName, "initializer-name", defaultInitializerName, "The initializer name")
-	flag.StringVar(&namespace, "namespace", namespace, "The configuration namespace")
+	flag.StringVar(&namespace, "namespace", defaultNamespace, "The configuration namespace")
 	flag.BoolVar(&requireAnnotation, "require-annotation", false, "Require annotation for initialization")
 	flag.Parse()
 
@@ -120,7 +120,7 @@ func main() {
 	stop := make(chan struct{})
 	go controller.Run(stop)
 
-	watchReplicaSet(c, clientset, restClient)
+	//watchReplicaSet(c, clientset, restClient)
 
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
