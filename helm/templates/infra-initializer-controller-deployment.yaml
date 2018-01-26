@@ -20,7 +20,7 @@ spec:
       containers:
       - name: cord-infra-initializer
         image: {{ .Values.images.infra_initializer.repository }}:{{ .Values.images.infra_initializer.tag }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         args:
         - "-annotation=initializer.onf.io/cord-infra"
         - "-require-annotation=true"
