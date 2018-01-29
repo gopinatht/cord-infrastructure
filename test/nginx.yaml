@@ -1,16 +1,20 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
+  annotations:
+    "initializer.onf.io/cord-infra": "true"
   labels:
     app: nginx
-  name: nginx
+    envoy: "true"
+  name: nginx-with-annotation
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: nginx
-      name: nginx
+        envoy: "true"
+      name: nginx-with-annotation
     spec:
       containers:
       - name: nginx
