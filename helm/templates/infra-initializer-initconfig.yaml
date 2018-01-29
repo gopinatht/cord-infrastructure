@@ -11,5 +11,3 @@ initializers:
     - "*"
     resources:
     - deployments
-    - replicasets
-    - replicationcontrollers
