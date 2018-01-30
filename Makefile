@@ -1,6 +1,6 @@
 all_build_targets = cord-infra-initializer
 
-cord_infra_dir = ./cord-infra-initializer
+cord_infra_dir = ./cord-infra-initializer/
 
 all: $(all_build_targets)
 

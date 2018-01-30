@@ -66,6 +66,13 @@ func initializeReplicaset(replicaset *v1beta2.ReplicaSet, c *config, clientset *
 
 			initializedReplicaSet := replicaset.DeepCopy()
 
+			// Remove self from the list of pending Initializers while preserving ordering.
+			if len(pendingInitializers) == 1 {
+				initializedReplicaSet.ObjectMeta.Initializers = nil
+			} else {
+				initializedReplicaSet.ObjectMeta.Initializers.Pending = append(pendingInitializers[:0], pendingInitializers[1:]...)
+			}
+
 			if requireAnnotation {
 				a := replicaset.ObjectMeta.GetAnnotations()
 				_, ok := a[annotation]
