@@ -81,26 +81,32 @@ func initializeReplicaset(replicaset *v1beta2.ReplicaSet, c *config, clientset *
 
 			// Modify the ReplicaSet's Pod template to include the cord infra container
 			// and configuration volume. Then patch the original replicaset.
+			log.Println("Updating container and volume list in replica set")
 			initializedReplicaSet.Spec.Template.Spec.Containers = append(replicaset.Spec.Template.Spec.Containers, c.Containers...)
 			initializedReplicaSet.Spec.Template.Spec.Volumes = append(replicaset.Spec.Template.Spec.Volumes, c.Volumes...)
 
 			oldData, err := json.Marshal(replicaset)
 			if err != nil {
+				log.Printf("Error marshalling original replicaset: %s", err.Error())
 				return err
 			}
 
 			newData, err := json.Marshal(initializedReplicaSet)
 			if err != nil {
+				log.Printf("Error marshalling new replicaset: %s", err.Error())
 				return err
 			}
 
+			log.Println("Creating two way merge patch")
 			patchBytes, err := strategicpatch.CreateTwoWayMergePatch(oldData, newData, v1beta2.ReplicaSet{})
 			if err != nil {
+				log.Printf("Error creating two way merge patch: %s", err.Error())
 				return err
 			}
-
+			log.Println("Patching the replica set")
 			_, err = clientset.AppsV1beta2().ReplicaSets(replicaset.Namespace).Patch(replicaset.Name, types.StrategicMergePatchType, patchBytes)
 			if err != nil {
+				log.Printf("Error patching the replicaset: %s", err.Error())
 				return err
 			}
 		}
