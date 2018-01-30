@@ -2,7 +2,7 @@ appname = cord-infra-initializer
 app_output = ./$(appname)
 docker_repo = gopinatht
 docker_tag = latest
-application_directory = .
+application_directory = ./src
 docker_directory = .
 
 all: push

@@ -18,7 +18,7 @@ import (
 	"k8s.io/client-go/tools/cache"
 )
 
-func watchReplicaSet(c *config, clientset *kubernetes.Clientset, restClient rest.Interface) {
+func watchReplicaSet(c *config, clientset *kubernetes.Clientset, restClient rest.Interface, stop <-chan struct{}) {
 	watchlist := cache.NewListWatchFromClient(restClient, "replicasets", corev1.NamespaceAll, fields.Everything())
 
 	// Wrap the returned watchlist to workaround the inability to include
@@ -47,7 +47,6 @@ func watchReplicaSet(c *config, clientset *kubernetes.Clientset, restClient rest
 		},
 	)
 
-	stop := make(chan struct{})
 	go controller.Run(stop)
 }
 
