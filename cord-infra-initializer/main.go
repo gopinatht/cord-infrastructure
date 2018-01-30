@@ -120,7 +120,7 @@ func main() {
 	stop := make(chan struct{})
 	go controller.Run(stop)
 
-	//watchReplicaSet(c, clientset, restClient)
+	watchReplicaSet(c, clientset, restClient)
 
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
