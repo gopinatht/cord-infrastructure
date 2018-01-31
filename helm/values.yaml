@@ -3,5 +3,5 @@ images:
     repository: gopinatht/cord-infra-initializer
     tag: 'latest'
   infra_helper:
-    repository: gopinatht/infra-helper
+    repository: gopinatht/cord-infra-sidecar
     tag: 'latest'
