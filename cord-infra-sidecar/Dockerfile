@@ -9,7 +9,7 @@ RUN make
 RUN make install
 ADD . /src
 WORKDIR /src
-RUN cd /src && go get -d ./... && go build -a --ldflags '-extldflags "-static"' -tags netgo -installsuffix netgo -o cord-infra-sidecar ./src
+RUN cd /src && go get -d ./... && go build -a --ldflags '-extldflags "-static"' -tags static_all -tags netgo -installsuffix netgo -o cord-infra-sidecar ./src
 
 # final stage
 FROM ubuntu:16.04
