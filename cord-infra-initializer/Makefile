@@ -7,8 +7,12 @@ docker_directory = .
 
 all: push
 
-image:
+build:
+	GOOS=linux go build -a --ldflags '-extldflags "-static"' -tags netgo -installsuffix netgo -o $(app_output) $(application_directory)
+
+image: build
 	docker build -t $(docker_repo)/$(appname):$(docker_tag) $(docker_directory)
+	rm -r $(app_output)
 
 push: image
 	docker push $(docker_repo)/$(appname):$(docker_tag)

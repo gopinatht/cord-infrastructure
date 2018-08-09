@@ -27,9 +27,8 @@ import (
 
 func main() {
 
-	podIP, hwAddr := getPodNetworkDetails()
-	fmt.Printf("The pod IP is: %s\n", podIP)
-	fmt.Printf("The pod HW Address is: %s\n", hwAddr)
+	podDetails := GetPodDetails()
+	fmt.Printf("The pod details are: %v\n", podDetails)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
 	<-signalChan

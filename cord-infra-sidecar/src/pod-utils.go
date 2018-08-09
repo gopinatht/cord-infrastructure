@@ -17,45 +17,48 @@ limitations under the License.
 package main
 
 import (
-	"fmt"
 	"net"
 	"os"
-	"strings"
 )
 
-func getPodNetworkDetails() (podIP string, hwAddr string) {
+type InterfaceDetails struct {
+	name      string
+	hwaddress string
+	addresses []string
+}
 
-	podIP = os.Getenv("MY_POD_IP")
-	hwAddr = ""
+type PodDetails struct {
+	name          string
+	netInterfaces []InterfaceDetails
+}
+
+func GetPodDetails() (podDetails *PodDetails) {
+
+	podName := os.Getenv("MY_POD_NAME")
+	if podName == "" {
+		podName = os.Getenv("HOSTNAME")
+	}
+	podDetails = &PodDetails{name: podName, netInterfaces: make([]InterfaceDetails, 0)}
+
 	l, err := net.Interfaces()
-	found := false
 
 	if err == nil {
 		for _, f := range l {
+			netInterface := InterfaceDetails{}
+			netInterface.name = f.Name
+			netInterface.hwaddress = f.HardwareAddr.String()
 
 			addrs, err := f.Addrs()
 
 			if err == nil {
-
+				netInterface.addresses = make([]string, 0)
 				for _, addr := range addrs {
-
-					if strings.Contains(addr.String(), podIP) {
-						fmt.Printf("Interface Name: %s\n", f.Name)
-						fmt.Printf("Interface Address: %s\n", addr.String())
-						fmt.Printf("Interface HW Address: %s\n", f.HardwareAddr.String())
-						hwAddr = f.HardwareAddr.String()
-						found = true
-						break
-					}
+					netInterface.addresses = append(netInterface.addresses, addr.String())
 				}
-
 			}
-
-			if found {
-				break
-			}
-
+			podDetails.netInterfaces = append(podDetails.netInterfaces, netInterface)
 		}
+
 	}
 	return
 }

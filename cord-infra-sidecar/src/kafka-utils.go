@@ -7,7 +7,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-func ProduceKafkaMessage(broker string, topic string) {
+func ProduceKafkaMessage(broker string, topic string, value string) {
 
 	// if len(os.Args) != 3 {
 	// 	fmt.Fprintf(os.Stderr, "Usage: %s <broker> <topic>\n",
@@ -31,7 +31,6 @@ func ProduceKafkaMessage(broker string, topic string) {
 	// .Events channel is used.
 	deliveryChan := make(chan kafka.Event)
 
-	value := "Hello Go!"
 	err = p.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Value:          []byte(value),
