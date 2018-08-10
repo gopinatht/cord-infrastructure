@@ -21,4 +21,4 @@ data:
             valueFrom:
               fieldRef:
                 fieldPath: status.podIP
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always

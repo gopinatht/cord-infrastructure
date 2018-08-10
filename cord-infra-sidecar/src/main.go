@@ -17,6 +17,8 @@ limitations under the License.
 package main
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -25,10 +27,34 @@ import (
 	//"k8s.io/apimachinery/pkg/api/errors"
 )
 
+const (
+	defaultKafkaBroker = "cord-kafka"
+	defaultKafkaTopic  = "dp-pod-details"
+)
+
+var (
+	kafkaBroker string
+	kafkaTopic  string
+)
+
 func main() {
+
+	flag.StringVar(&kafkaBroker, "kafka-broker", defaultKafkaBroker, "The kafka broker to use")
+	flag.StringVar(&kafkaTopic, "kafka-topic", defaultKafkaTopic, "The kafka topic to use")
 
 	podDetails := GetPodDetails()
 	fmt.Printf("The pod details are: %v\n", podDetails)
+	podDetailsJSON, err := json.Marshal(podDetails)
+
+	if err == nil {
+		fmt.Printf("Sending struct to kafka\n")
+		ProduceKafkaMessage(kafkaBroker, kafkaTopic, string(podDetailsJSON))
+		fmt.Printf("After Sending struct to kafka\n")
+
+	} else {
+		fmt.Printf("\nCould not marshal Struct to Json: %v\n", err)
+	}
+
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
 	<-signalChan

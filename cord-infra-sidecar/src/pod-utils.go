@@ -22,14 +22,14 @@ import (
 )
 
 type InterfaceDetails struct {
-	name      string
-	hwaddress string
-	addresses []string
+	Name      string   `json:"name"`
+	Hwaddress string   `json:"hwaddress"`
+	Addresses []string `json:"addresses"`
 }
 
 type PodDetails struct {
-	name          string
-	netInterfaces []InterfaceDetails
+	Name          string             `json:"number"`
+	NetInterfaces []InterfaceDetails `json:"interfaceDetails"`
 }
 
 func GetPodDetails() (podDetails *PodDetails) {
@@ -38,25 +38,25 @@ func GetPodDetails() (podDetails *PodDetails) {
 	if podName == "" {
 		podName = os.Getenv("HOSTNAME")
 	}
-	podDetails = &PodDetails{name: podName, netInterfaces: make([]InterfaceDetails, 0)}
+	podDetails = &PodDetails{Name: podName, NetInterfaces: make([]InterfaceDetails, 0)}
 
 	l, err := net.Interfaces()
 
 	if err == nil {
 		for _, f := range l {
 			netInterface := InterfaceDetails{}
-			netInterface.name = f.Name
-			netInterface.hwaddress = f.HardwareAddr.String()
+			netInterface.Name = f.Name
+			netInterface.Hwaddress = f.HardwareAddr.String()
 
 			addrs, err := f.Addrs()
 
 			if err == nil {
-				netInterface.addresses = make([]string, 0)
+				netInterface.Addresses = make([]string, 0)
 				for _, addr := range addrs {
-					netInterface.addresses = append(netInterface.addresses, addr.String())
+					netInterface.Addresses = append(netInterface.Addresses, addr.String())
 				}
 			}
-			podDetails.netInterfaces = append(podDetails.netInterfaces, netInterface)
+			podDetails.NetInterfaces = append(podDetails.NetInterfaces, netInterface)
 		}
 
 	}
