@@ -21,6 +21,22 @@ import (
 	"os"
 )
 
+// {
+//   "status": "created",
+//   "kubernetesserviceinstance_id": 36,
+//   "labels": {
+//               "pod-template-hash": "3679616875",
+//               "release": "onos-cord",
+//               "app": "onos",
+//               "xos_service": "onos-cord"
+//   },
+//   "netinterfaces": {
+//                      "name": "primary",
+//                      "addresses": ["172.17.0.13"]
+//   },
+//   "name": "onos-cord-7bcfb5bdc9-644v2"
+// }
+
 type InterfaceDetails struct {
 	Name      string   `json:"name"`
 	Hwaddress string   `json:"hwaddress"`
@@ -28,8 +44,12 @@ type InterfaceDetails struct {
 }
 
 type PodDetails struct {
-	Name          string             `json:"number"`
-	NetInterfaces []InterfaceDetails `json:"interfaceDetails"`
+	Status                      string             `json:"status"`
+	Producer                    string             `json:"producer"`
+	KubernetesserviceinstanceID int                `json:"kubernetesserviceinstance_id"`
+	Labels                      map[string]string  `json:"labels"`
+	Name                        string             `json:"name"`
+	NetInterfaces               []InterfaceDetails `json:"interfaceDetails"`
 }
 
 func GetPodDetails() (podDetails *PodDetails) {
@@ -38,7 +58,11 @@ func GetPodDetails() (podDetails *PodDetails) {
 	if podName == "" {
 		podName = os.Getenv("HOSTNAME")
 	}
-	podDetails = &PodDetails{Name: podName, NetInterfaces: make([]InterfaceDetails, 0)}
+	podDetails = &PodDetails{Name: podName,
+		Producer:      "sidecar",
+		NetInterfaces: make([]InterfaceDetails, 0),
+		Labels:        make(map[string]string, 0),
+	}
 
 	l, err := net.Interfaces()
 

@@ -29,7 +29,7 @@ import (
 
 const (
 	defaultKafkaBroker = "cord-kafka"
-	defaultKafkaTopic  = "dp-pod-details"
+	defaultKafkaTopic  = "xos.kubernetes.pod-details"
 )
 
 var (
