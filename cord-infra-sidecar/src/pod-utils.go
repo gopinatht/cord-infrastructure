@@ -58,7 +58,8 @@ func GetPodDetails() (podDetails *PodDetails) {
 	if podName == "" {
 		podName = os.Getenv("HOSTNAME")
 	}
-	podDetails = &PodDetails{Name: podName,
+	podDetails = &PodDetails{
+		Name:          podName,
 		Producer:      "sidecar",
 		NetInterfaces: make([]InterfaceDetails, 0),
 		Labels:        make(map[string]string, 0),

@@ -43,12 +43,16 @@ func main() {
 	flag.StringVar(&kafkaTopic, "kafka-topic", defaultKafkaTopic, "The kafka topic to use")
 
 	podDetails := GetPodDetails()
-	fmt.Printf("The pod details are: %v\n", podDetails)
+	//fmt.Printf("The pod details are: %v\n", podDetails)
 	podDetailsJSON, err := json.Marshal(podDetails)
+
+	fmt.Println("===========Pod Interface details==========")
+	fmt.Printf("\n%v\n", string(podDetailsJSON))
+	fmt.Println("===========Pod Interface details==========")
 
 	if err == nil {
 		fmt.Printf("Sending struct to kafka\n")
-		ProduceKafkaMessage(kafkaBroker, kafkaTopic, string(podDetailsJSON))
+		//ProduceKafkaMessage(kafkaBroker, kafkaTopic, string(podDetailsJSON))
 		fmt.Printf("After Sending struct to kafka\n")
 
 	} else {
